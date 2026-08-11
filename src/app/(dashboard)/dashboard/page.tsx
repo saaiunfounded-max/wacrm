@@ -122,17 +122,17 @@ export default function DashboardPage() {
   )
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-6">
       {/* Header */}
-      <div className="border-b border-border/30 pb-6">
-        <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">{t('title')}</h1>
-        <p className="mt-2 text-base text-muted-foreground max-w-3xl leading-relaxed">
+      <div className="border-b border-border/30 pb-8">
+        <h1 className="text-4xl font-extrabold tracking-tight text-[#1D1D1F] dark:text-foreground sm:text-[38px]">{t('title')}</h1>
+        <p className="mt-3 text-base text-[#6E6E73] dark:text-muted-foreground max-w-3xl leading-relaxed">
           {t('description')}
         </p>
       </div>
 
       {/* Metric cards */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {metricsLoading || !metrics ? (
           Array.from({ length: 4 }).map((_, i) => <SkeletonCard key={i} />)
         ) : (
@@ -191,15 +191,9 @@ export default function DashboardPage() {
       {/* Quick actions */}
       <QuickActions />
 
-      {/* Charts row */}
-      {/* items-stretch (the grid default) stretches the two columns to
-          match the tallest sibling; adding h-full on each wrapper and
-          on the inner panels makes both cards actually fill that
-          stretched height so their rounded borders line up. Without
-          this, the pipeline card rendered at its natural (shorter)
-          height while the line chart drove the row height. */}
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-5">
-        <div className="h-full lg:col-span-3">
+      {/* Charts row (Bento 12-column layout) */}
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
+        <div className="h-full lg:col-span-8">
           <ConversationsChart
             series={series}
             loading={seriesLoading}
@@ -207,7 +201,7 @@ export default function DashboardPage() {
             onRangeChange={handleRangeChange}
           />
         </div>
-        <div className="h-full lg:col-span-2">
+        <div className="h-full lg:col-span-4">
           <PipelineDonut
             data={pipeline}
             loading={pipelineLoading}
