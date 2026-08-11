@@ -30,7 +30,7 @@ export function QuickActions() {
           <Link
             key={a.href}
             href={a.href}
-            className="group flex flex-col items-start rounded-2xl border border-border/40 bg-card p-8 transition-all hover:border-border/80 hover:shadow-sm"
+            className="group flex flex-col items-start rounded-3xl border border-transparent bg-card p-8 transition-all hover:shadow-sm hover:bg-secondary/40"
           >
             <div className="flex h-10 w-10 items-center justify-center rounded-[10px] bg-secondary/70 text-foreground transition-transform group-hover:scale-105">
               <Icon className="h-5 w-5 text-foreground/80" strokeWidth={1.5} />

@@ -23,7 +23,7 @@ interface MetricCardProps {
 
 export function MetricCard({ title, value, icon: Icon, delta, subtitle }: MetricCardProps) {
   return (
-    <div className="rounded-2xl border border-border/40 bg-card p-8 transition-all hover:border-border/80 hover:shadow-sm">
+    <div className="rounded-3xl border border-transparent bg-card p-8 transition-all hover:shadow-sm hover:bg-secondary/40">
       <div className="flex items-baseline justify-between gap-4">
         <p className="text-xs font-semibold uppercase tracking-[0.06em] text-[#86868B]">{title}</p>
         <Icon className="h-[18px] w-[18px] text-muted-foreground/60 flex-shrink-0" strokeWidth={1.5} />

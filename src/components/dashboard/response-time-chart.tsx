@@ -47,7 +47,7 @@ export function ResponseTimeChart({
     })) ?? []
 
   return (
-    <section className="rounded-2xl border border-border/40 bg-card">
+    <section className="rounded-3xl border border-transparent bg-card">
       <header className="flex items-center justify-between gap-3 border-b border-border/30 px-8 py-6">
         <div>
           <h2 className="text-xl font-bold tracking-tight text-foreground">
