@@ -71,31 +71,31 @@ export const THEMES: ReadonlyArray<ThemeMeta> = [
     id: "violet",
     name: "Violet",
     tagline: "The default — confident, slightly playful.",
-    swatch: "oklch(0.526 0.247 293)",
+    swatch: "#000000",
   },
   {
     id: "emerald",
     name: "Emerald",
     tagline: "Growth-coded, nods at messaging without copying WhatsApp green.",
-    swatch: "oklch(0.62 0.16 162)",
+    swatch: "#2C2C2E",
   },
   {
     id: "cobalt",
     name: "Cobalt",
     tagline: "Clean B2B-SaaS blue — calm and product-y.",
-    swatch: "oklch(0.585 0.2 254)",
+    swatch: "#747476",
   },
   {
     id: "amber",
     name: "Amber",
     tagline: "Warm and friendly — feels good for SMB teams.",
-    swatch: "oklch(0.745 0.16 65)",
+    swatch: "#AEAEB2",
   },
   {
     id: "rose",
     name: "Rose",
     tagline: "Bold and modern — D2C, creator-economy, lifestyle.",
-    swatch: "oklch(0.645 0.22 16)",
+    swatch: "#F2F2F7",
   },
 ];
 
