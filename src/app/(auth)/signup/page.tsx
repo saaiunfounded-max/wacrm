@@ -150,7 +150,7 @@ function SignupPageInner() {
         <CardContent>
           <form onSubmit={handleSignup} className="flex flex-col gap-4">
             {error && (
-              <div className="rounded-lg border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-400">
+              <div className="rounded-lg border border-red-500/25 bg-red-500/10 px-4 py-3 text-sm font-medium text-rose-600">
                 {error}
               </div>
             )}
@@ -232,7 +232,7 @@ function SignupPageInner() {
                   ? `/login?invite=${encodeURIComponent(inviteToken)}`
                   : "/login"
               }
-              className="text-primary hover:text-primary/80"
+              className="font-medium underline underline-offset-4 text-foreground hover:text-foreground/80"
             >
               Sign in
             </Link>

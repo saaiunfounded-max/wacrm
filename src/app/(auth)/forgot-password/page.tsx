@@ -88,7 +88,7 @@ export default function ForgotPasswordPage() {
         <CardContent>
           <form onSubmit={handleReset} className="flex flex-col gap-4">
             {error && (
-              <div className="rounded-lg border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-400">
+              <div className="rounded-lg border border-red-500/25 bg-red-500/10 px-4 py-3 text-sm font-medium text-rose-600">
                 {error}
               </div>
             )}
@@ -117,9 +117,9 @@ export default function ForgotPasswordPage() {
             </Button>
           </form>
 
-          <Link
+           <Link
             href="/login"
-            className="mt-6 flex items-center justify-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+            className="mt-6 flex items-center justify-center gap-2 text-sm font-medium underline underline-offset-4 text-muted-foreground hover:text-foreground"
           >
             <ArrowLeft className="h-4 w-4" />
             Back to sign in
