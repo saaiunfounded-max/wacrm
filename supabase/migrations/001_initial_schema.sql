@@ -5,7 +5,9 @@
 -- ============================================================
 
 -- Enable UUID extension
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA extensions;
+SELECT pg_catalog.set_config('search_path', 'public,extensions', false);
+
 
 -- ============================================================
 -- PROFILES

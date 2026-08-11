@@ -111,6 +111,15 @@ export async function GET(request: Request) {
       )
     }
 
+    // Check if the verify token matches the fallback environment token
+    const EXPECTED_TOKEN = process.env.WEBHOOK_VERIFY_TOKEN || 'ziggers_wacrm_verify_2026_secret';
+    if (verifyToken === EXPECTED_TOKEN) {
+      return new Response(challenge, {
+        status: 200,
+        headers: { 'Content-Type': 'text/plain' },
+      });
+    }
+
     // Fetch all whatsapp configs to check verify tokens
     const { data: configs, error: configError } = await supabaseAdmin()
       .from('whatsapp_config')
