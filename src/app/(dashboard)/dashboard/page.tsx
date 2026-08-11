@@ -146,7 +146,7 @@ export default function DashboardPage() {
                 label: deltaLabel(
                   metrics.activeConversations.previous, 
                   t('newTodayVsYesterday'), 
-                  t('noChange', { suffix: t('newTodayVsYesterday') })
+                  t('noChange')
                 ),
               }}
             />
@@ -160,7 +160,7 @@ export default function DashboardPage() {
                 label: deltaLabel(
                   metrics.newContactsToday.current - metrics.newContactsToday.previous,
                   t('vsYesterday'),
-                  t('noChange', { suffix: t('vsYesterday') })
+                  t('noChange')
                 ),
               }}
             />
@@ -168,7 +168,7 @@ export default function DashboardPage() {
               title={t('openDealsValue')}
               value={formatCurrency(metrics.openDealsValue, defaultCurrency)}
               icon={DollarSign}
-              subtitle={t('openDeals', { count: metrics.openDealsCount })}
+              subtitle={metrics.openDealsCount === 1 ? t('openDealsSingular') : `${metrics.openDealsCount} ${t('openDealsPlural')}`}
             />
             <MetricCard
               title={t('messagesSentToday')}
@@ -180,7 +180,7 @@ export default function DashboardPage() {
                 label: deltaLabel(
                   metrics.messagesSentToday.current - metrics.messagesSentToday.previous,
                   t('vsYesterday'),
-                  t('noChange', { suffix: t('vsYesterday') })
+                  t('noChange')
                 ),
               }}
             />

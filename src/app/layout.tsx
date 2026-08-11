@@ -66,14 +66,10 @@ const THEME_BOOT_SCRIPT = `
     var savedTheme = localStorage.getItem(THEME_KEY);
     d.dataset.theme = THEMES.indexOf(savedTheme) !== -1 ? savedTheme : THEME_DEFAULT;
 
-    var MODE_KEY = ${JSON.stringify(MODE_STORAGE_KEY)};
-    var MODE_DEFAULT = ${JSON.stringify(DEFAULT_MODE)};
-    var MODES = ${JSON.stringify(MODES)};
-    var savedMode = localStorage.getItem(MODE_KEY);
-    d.dataset.mode = MODES.indexOf(savedMode) !== -1 ? savedMode : MODE_DEFAULT;
+    d.dataset.mode = "light";
   } catch (_e) {
     d.dataset.theme = ${JSON.stringify(DEFAULT_THEME)};
-    d.dataset.mode = ${JSON.stringify(DEFAULT_MODE)};
+    d.dataset.mode = "light";
   }
 })();
 `;

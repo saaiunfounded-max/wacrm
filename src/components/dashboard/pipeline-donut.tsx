@@ -19,14 +19,14 @@ export function PipelineDonut({ data, loading, currency }: PipelineDonutProps) {
   const t = useTranslations('Dashboard.pipelineDonut')
   return (
     <section className="flex h-full flex-col rounded-2xl border border-border/40 bg-card">
-      <header className="border-b border-border px-5 py-4">
-        <h2 className="text-sm font-semibold text-foreground">{t('title')}</h2>
-        <p className="mt-0.5 text-xs text-muted-foreground">
+      <header className="border-b border-border/30 px-8 py-6">
+        <h2 className="text-xl font-bold tracking-tight text-foreground">{t('title')}</h2>
+        <p className="mt-1 text-sm text-muted-foreground">
           {t('description')}
         </p>
       </header>
 
-      <div className="flex flex-1 flex-col p-5">
+      <div className="flex flex-1 flex-col p-8">
         {loading || !data ? (
           <Skeleton className="h-56 w-full" />
         ) : data.stages.length === 0 ? (

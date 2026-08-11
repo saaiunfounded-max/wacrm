@@ -77,8 +77,9 @@
       "messagesSentToday": "Messages Sent Today",
       "newTodayVsYesterday": "new today vs yesterday",
       "vsYesterday": "vs yesterday",
-      "openDeals": "{count} open {count, plural, =1 {deal} other {deals}}",
-      "noChange": "No change {suffix}"
+      "openDealsSingular": "1 open deal",
+      "openDealsPlural": "open deals",
+      "noChange": "No change"
     },
     "quickActions": {
       "newContact": "New Contact",
@@ -102,6 +103,9 @@
       "title": "Conversations Over Time",
       "description": "Daily message volume by direction",
       "days": "{count} days",
+      "days7": "7 days",
+      "days30": "30 days",
+      "days90": "90 days",
       "noActivity": "No message activity in this range",
       "noActivityHint": "Send or receive messages to start populating this chart.",
       "incoming": "Incoming",

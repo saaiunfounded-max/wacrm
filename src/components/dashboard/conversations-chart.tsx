@@ -50,12 +50,12 @@ export function ConversationsChart({ series, loading, range, onRangeChange }: Co
 
   return (
     <section className="flex h-full flex-col rounded-2xl border border-border/40 bg-card">
-      <header className="flex items-center justify-between border-b border-border px-5 py-4">
-        <div>
-          <h2 className="text-sm font-semibold text-foreground">{t('title')}</h2>
-          <p className="mt-0.5 text-xs text-muted-foreground">{t('description')}</p>
+      <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-border/30 px-8 py-6">
+        <div className="min-w-0">
+          <h2 className="text-xl font-bold tracking-tight text-foreground truncate">{t('title')}</h2>
+          <p className="mt-1 text-sm text-muted-foreground truncate">{t('description')}</p>
         </div>
-        <div className="flex items-center gap-1 rounded-lg bg-muted/60 p-1">
+        <div className="flex flex-shrink-0 items-center gap-1 rounded-lg bg-muted/60 p-1">
           {[7, 30, 90].map((r) => (
             <button
               key={r}
@@ -68,13 +68,13 @@ export function ConversationsChart({ series, loading, range, onRangeChange }: Co
                   : 'text-muted-foreground hover:text-foreground',
               )}
             >
-              {t('days', { count: r })}
+              {r === 7 ? t('days7') : r === 30 ? t('days30') : t('days90')}
             </button>
           ))}
         </div>
       </header>
 
-      <div className="p-5">
+      <div className="p-8">
         {loading || !data ? (
           <Skeleton className="h-[240px] w-full" />
         ) : data.every((p) => p.incoming === 0 && p.outgoing === 0) ? (
@@ -88,7 +88,7 @@ export function ConversationsChart({ series, loading, range, onRangeChange }: Co
         )}
       </div>
 
-      <footer className="flex items-center gap-4 border-t border-border px-5 py-3 text-xs text-muted-foreground">
+      <footer className="flex items-center gap-4 border-t border-border/30 px-8 py-5 text-xs text-muted-foreground">
         <LegendDot color="var(--foreground)" label={t('incoming')} />
         <LegendDot color="var(--muted-foreground)" label={t('outgoing')} />
       </footer>

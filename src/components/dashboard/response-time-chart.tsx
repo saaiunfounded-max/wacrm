@@ -48,18 +48,18 @@ export function ResponseTimeChart({
 
   return (
     <section className="rounded-2xl border border-border/40 bg-card">
-      <header className="flex items-center justify-between gap-3 border-b border-border px-5 py-4">
+      <header className="flex items-center justify-between gap-3 border-b border-border/30 px-8 py-6">
         <div>
-          <h2 className="text-sm font-semibold text-foreground">
+          <h2 className="text-xl font-bold tracking-tight text-foreground">
             {t('title')}
           </h2>
-          <p className="mt-0.5 text-xs text-muted-foreground">
+          <p className="mt-1 text-sm text-muted-foreground">
             {t('description')}
           </p>
         </div>
         <div className="flex items-center gap-3 text-right text-xs">
           {thresholdMinutes > 0 && (
-            <span className="rounded-full border border-rose-500/40 bg-rose-500/10 px-2 py-0.5 font-medium text-rose-300 tabular-nums">
+            <span className="rounded-full border border-border/60 bg-secondary/80 px-2.5 py-0.5 font-medium text-foreground/80 tabular-nums">
               {t('target', { minutes: thresholdMinutes })}
             </span>
           )}
@@ -80,7 +80,7 @@ export function ResponseTimeChart({
         </div>
       </header>
 
-      <div className="p-5">
+      <div className="p-8">
         {loading || !data ? (
           <Skeleton className="h-[260px] w-full" />
         ) : !hasData ? (

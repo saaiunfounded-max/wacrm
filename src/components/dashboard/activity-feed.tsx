@@ -58,24 +58,24 @@ export function ActivityFeed({ items, loading }: ActivityFeedProps) {
 
   return (
     <section className="rounded-2xl border border-border/40 bg-card">
-      <header className="flex items-center justify-between border-b border-border px-5 py-4">
-        <h2 className="text-sm font-semibold text-foreground">{t('title')}</h2>
+      <header className="flex items-center justify-between border-b border-border/30 px-8 py-6">
+        <h2 className="text-xl font-bold tracking-tight text-foreground">{t('title')}</h2>
         <Link
           href="/inbox"
-          className="text-xs font-medium text-primary hover:text-primary/80"
+          className="text-xs font-medium text-foreground hover:text-foreground/80 underline underline-offset-4"
         >
           {t('viewAll')}
         </Link>
       </header>
 
       {loading || !items ? (
-        <div className="space-y-2 p-5">
+        <div className="space-y-2 p-8">
           {Array.from({ length: 5 }).map((_, i) => (
             <Skeleton key={i} className="h-10 w-full" />
           ))}
         </div>
       ) : items.length === 0 ? (
-        <div className="p-5">
+        <div className="p-8">
           <EmptyState
             icon={Inbox}
             title={t('noActivity')}
@@ -93,7 +93,7 @@ export function ActivityFeed({ items, loading }: ActivityFeedProps) {
               // (bg-card/40 vanishes against a white card surface in light).
               const stripe = i % 2 === 0 ? 'bg-transparent' : 'bg-muted/40'
               const row = (
-                <div className="flex items-center gap-3 px-5 py-2.5">
+                <div className="flex items-center gap-3 px-8 py-3.5">
                   <span
                     className={cn(
                       'flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full',
@@ -123,7 +123,7 @@ export function ActivityFeed({ items, loading }: ActivityFeedProps) {
               )
             })}
           </ul>
-          <footer className="flex items-center justify-between border-t border-border px-5 py-3 text-xs">
+          <footer className="flex items-center justify-between border-t border-border/30 px-8 py-4 text-xs">
             <span className="text-muted-foreground tabular-nums">
               {t('showingOf', { visible: visible.length, totalLoaded, plus: totalLoaded === 50 ? '+' : '' })}
             </span>

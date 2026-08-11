@@ -77,8 +77,9 @@
       "messagesSentToday": "오늘 보낸 메시지",
       "newTodayVsYesterday": "어제 대비 신규",
       "vsYesterday": "어제 대비",
-      "openDeals": "진행 중인 딜 {count}건",
-      "noChange": "변동 없음 {suffix}"
+      "openDealsSingular": "진행 중인 딜 1건",
+      "openDealsPlural": "진행 중인 딜",
+      "noChange": "변동 없음"
     },
     "quickActions": {
       "newContact": "새 연락처",
@@ -102,6 +103,9 @@
       "title": "기간별 대화 추이",
       "description": "방향별 일일 메시지 볼륨",
       "days": "{count}일",
+      "days7": "7일",
+      "days30": "30일",
+      "days90": "90일",
       "noActivity": "이 기간에는 메시지 활동이 없습니다",
       "noActivityHint": "메시지를 주고받으면 이 차트가 채워지기 시작합니다.",
       "incoming": "수신",
