@@ -11,7 +11,7 @@
  */
 
 /** App-wide fallback when no account/deal currency is available. */
-export const DEFAULT_CURRENCY = "USD";
+export const DEFAULT_CURRENCY = "INR";
 
 export interface CurrencyOption {
   /** ISO-4217 code, e.g. "USD". Stored verbatim in the DB. */
@@ -60,9 +60,9 @@ export const CURRENCIES: CurrencyOption[] = [
  */
 export function formatCurrency(
   value: number,
-  currency: string = DEFAULT_CURRENCY,
+  currency: string = "INR",
 ): string {
-  const code = (currency || DEFAULT_CURRENCY).trim();
+  const code = "INR";
   const amount = Number(value) || 0;
   try {
     return new Intl.NumberFormat(undefined, {
@@ -72,9 +72,7 @@ export function formatCurrency(
       maximumFractionDigits: 0,
     }).format(amount);
   } catch {
-    // Invalid ISO code — show the raw code + grouped number so the
-    // value is still legible instead of throwing.
-    return `${code} ${new Intl.NumberFormat(undefined, {
+    return `₹${new Intl.NumberFormat(undefined, {
       maximumFractionDigits: 0,
     }).format(amount)}`;
   }
@@ -87,10 +85,9 @@ export function formatCurrency(
  */
 export function formatCurrencyShort(
   value: number,
-  currency: string = DEFAULT_CURRENCY,
+  currency: string = "INR",
 ): string {
-  const code = currency || DEFAULT_CURRENCY;
-  const symbol = CURRENCIES.find((c) => c.code === code)?.symbol ?? `${code} `;
+  const symbol = "₹";
   return `${symbol}${formatCompactNumber(value)}`;
 }
 

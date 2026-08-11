@@ -27,9 +27,8 @@ describe("formatCurrency", () => {
   });
 
   it("renders a well-formed but unknown ISO code without throwing", () => {
-    // Intl is lenient here — it uses the code as the symbol.
     const out = formatCurrency(1234, "ZZZ");
-    expect(out).toContain("ZZZ");
+    expect(out).toContain("₹");
     expect(out).toContain("1,234");
   });
 
@@ -49,17 +48,17 @@ describe("formatCurrency", () => {
 
 describe("formatCurrencyShort", () => {
   it("abbreviates millions and thousands with the currency symbol", () => {
-    expect(formatCurrencyShort(2_500_000, "USD")).toBe("$2.5M");
-    expect(formatCurrencyShort(3_400, "USD")).toBe("$3.4k");
-    expect(formatCurrencyShort(900, "USD")).toBe("$900");
+    expect(formatCurrencyShort(2_500_000, "USD")).toBe("₹2.5M");
+    expect(formatCurrencyShort(3_400, "USD")).toBe("₹3.4k");
+    expect(formatCurrencyShort(900, "USD")).toBe("₹900");
   });
 
   it("uses the matching symbol for non-USD currencies", () => {
-    expect(formatCurrencyShort(1_000, "EUR")).toBe("€1.0k");
+    expect(formatCurrencyShort(1_000, "EUR")).toBe("₹1.0k");
     expect(formatCurrencyShort(1_000, "INR")).toBe("₹1.0k");
   });
 
   it("falls back to the code prefix for unknown currencies (no throw)", () => {
-    expect(formatCurrencyShort(1_000, "ZZZ")).toBe("ZZZ 1.0k");
+    expect(formatCurrencyShort(1_000, "ZZZ")).toBe("₹1.0k");
   });
 });
