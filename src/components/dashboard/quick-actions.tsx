@@ -28,19 +28,20 @@ export function QuickActions() {
   const t = useTranslations('Dashboard.quickActions')
   
   return (
-    <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+    <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
       {ACTIONS.map((a) => {
         const Icon = a.icon
         return (
           <Link
             key={a.href}
             href={a.href}
-            className="group flex items-center gap-3 rounded-xl border border-border bg-card px-4 py-3 transition-colors hover:border-border hover:bg-muted/60"
+            className="group flex flex-col items-start gap-4 rounded-lg border border-border/40 bg-card p-5 transition-all hover:border-border/80 hover:bg-secondary/20"
           >
-            <div className={`flex h-9 w-9 items-center justify-center rounded-lg bg-muted ${a.tint}`}>
-              <Icon className="h-4 w-4" />
+            <Icon className="h-5 w-5 text-foreground/80 transition-transform group-hover:-translate-y-0.5" />
+            <div className="flex flex-col gap-0.5">
+              <span className="text-sm font-semibold text-foreground tracking-tight">{t(a.labelKey as string)}</span>
+              <span className="text-xs text-muted-foreground/60">Shortcut</span>
             </div>
-            <span className="text-sm font-medium text-foreground">{t(a.labelKey as string)}</span>
           </Link>
         )
       })}

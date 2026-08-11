@@ -122,11 +122,11 @@ export default function DashboardPage() {
   )
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-10">
       {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-foreground">{t('title')}</h1>
-        <p className="mt-1 text-sm text-muted-foreground">
+      <div className="border-b border-border/30 pb-6">
+        <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">{t('title')}</h1>
+        <p className="mt-2 text-base text-muted-foreground max-w-3xl leading-relaxed">
           {t('description')}
         </p>
       </div>

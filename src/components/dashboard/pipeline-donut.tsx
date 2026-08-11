@@ -39,11 +39,11 @@ export function PipelineDonut({ data, loading, currency }: PipelineDonutProps) {
           <>
             <Donut data={data} currency={currency} />
             <ul className="mt-5 space-y-2">
-              {data.stages.map((s) => (
+              {data.stages.map((s, idx) => (
                 <li key={s.id} className="flex items-center gap-3 text-xs">
                   <span
                     className="h-2.5 w-2.5 flex-shrink-0 rounded-full"
-                    style={{ background: s.color }}
+                    style={{ background: ['var(--foreground)', 'var(--muted-foreground)', 'var(--border)', 'var(--secondary)', 'var(--card-2)'][idx % 5] }}
                     aria-hidden
                   />
                   <span className="flex-1 truncate text-muted-foreground">{s.name}</span>
@@ -95,7 +95,8 @@ function Donut({ data, currency }: { data: PipelineDonutData; currency: string }
   const segments = data.stages.map((s, i) => {
     const start = offsets[i] * Math.PI * 2 - Math.PI / 2
     const end = offsets[i + 1] * Math.PI * 2 - Math.PI / 2
-    return { path: arcPath(cx, cy, r, start, end), color: s.color, id: s.id }
+    const monoColor = ['var(--foreground)', 'var(--muted-foreground)', 'var(--border)', 'var(--secondary)', 'var(--card-2)'][i % 5]
+    return { path: arcPath(cx, cy, r, start, end), color: monoColor, id: s.id }
   })
 
   return (
