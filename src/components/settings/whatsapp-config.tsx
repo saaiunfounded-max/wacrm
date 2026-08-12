@@ -398,21 +398,22 @@ export function WhatsAppConfig() {
       <div className="space-y-6">
         {/* Corrupted-token reset banner */}
         {showResetBanner && (
-          <Alert className="bg-amber-950/40 border-amber-600/40">
+          <Alert className="bg-card border-border">
             <div className="flex items-start gap-3">
-              <AlertTriangle className="size-5 text-amber-400 mt-0.5 shrink-0" />
+              <AlertTriangle className="size-5 text-foreground mt-0.5 shrink-0" />
               <div className="flex-1">
-                <AlertTitle className="text-amber-200 mb-1">
+                <AlertTitle className="text-foreground mb-1">
                   Stored token can&apos;t be decrypted
                 </AlertTitle>
-                <AlertDescription className="text-amber-100/80 text-sm">
+                <AlertDescription className="text-muted-foreground text-sm">
                   {statusMessage}
                 </AlertDescription>
                 <Button
                   onClick={handleReset}
                   disabled={resetting}
                   size="sm"
-                  className="mt-3 bg-amber-600 hover:bg-amber-700 text-white"
+                  variant="outline"
+                  className="mt-3 border-border bg-transparent text-foreground hover:bg-muted"
                 >
                   {resetting ? (
                     <>
@@ -435,11 +436,11 @@ export function WhatsAppConfig() {
         <Alert className="bg-card border-border">
           <div className="flex items-center gap-2">
             {connectionStatus === 'connected' ? (
-              <CheckCircle2 className="size-4 text-primary" />
+              <CheckCircle2 className="size-4 text-foreground" />
             ) : (
-              <XCircle className="size-4 text-red-500" />
+              <XCircle className="size-4 text-foreground" />
             )}
-            <AlertTitle className="text-foreground mb-0">
+            <AlertTitle className="text-foreground mb-0 font-medium">
               {connectionStatus === 'connected' ? t('credentialsValid') : t('notConnected')}
             </AlertTitle>
           </div>
@@ -455,27 +456,17 @@ export function WhatsAppConfig() {
             Credentials being valid is necessary but not sufficient;
             without a successful /register call the number won't
             receive inbound events. Surface this dimension separately
-            so users don't trust a misleading green banner. */}
+            so users don't trust a misleading banner. */}
         {config && (
-          <Alert
-            className={
-              isRegistered
-                ? 'bg-emerald-950/30 border-emerald-700/50'
-                : 'bg-amber-950/30 border-amber-700/50'
-            }
-          >
+          <Alert className="bg-card border-border">
             <div className="flex items-center justify-between gap-2 flex-wrap">
               <div className="flex items-center gap-2">
                 {isRegistered ? (
-                  <CheckCircle2 className="size-4 text-emerald-400" />
+                  <CheckCircle2 className="size-4 text-foreground" />
                 ) : (
-                  <AlertTriangle className="size-4 text-amber-400" />
+                  <AlertTriangle className="size-4 text-foreground" />
                 )}
-                <AlertTitle
-                  className={
-                    'mb-0 ' + (isRegistered ? 'text-emerald-200' : 'text-amber-200')
-                  }
-                >
+                <AlertTitle className="mb-0 text-foreground font-semibold">
                   {isRegistered
                     ? t('registered')
                     : t('notRegistered')}
@@ -498,19 +489,17 @@ export function WhatsAppConfig() {
             </div>
             <AlertDescription className="text-muted-foreground mt-2 text-xs leading-relaxed">
               {isRegistered ? (
-                <span
-                  dangerouslySetInnerHTML={{
-                    __html: t('subscribedSince', {
-                      date: config.registered_at
-                        ? new Date(config.registered_at).toLocaleString()
-                        : t('unknownDate'),
-                    }),
-                  }}
-                />
+                <span>
+                  {t('subscribedSince', {
+                    date: config.registered_at
+                      ? new Date(config.registered_at).toLocaleString()
+                      : t('unknownDate'),
+                  })}
+                </span>
               ) : lastRegistrationError ? (
                 <>
                   {t('lastAttemptFailed')}
-                  <span className="text-red-300">
+                  <span className="font-mono text-foreground">
                     &quot;{lastRegistrationError}&quot;
                   </span>
                   . {t('retryHint')}
@@ -521,10 +510,10 @@ export function WhatsAppConfig() {
             </AlertDescription>
 
             {registrationProbe && (
-              <div className="mt-3 rounded border border-border bg-card/60 px-3 py-2 space-y-1.5 text-[11px]">
+              <div className="mt-3 rounded border border-border bg-muted/40 px-3 py-2 space-y-1.5 text-[11px]">
                 <p className="font-medium text-foreground">
                   {t('diagnosticLastRun')}
-                  <span className={registrationProbe.live ? 'text-emerald-400' : 'text-amber-400'}>
+                  <span className="font-semibold text-foreground ml-1">
                     {registrationProbe.live ? t('live') : t('notLive')}
                   </span>
                 </p>
@@ -532,9 +521,9 @@ export function WhatsAppConfig() {
                   {Object.entries(registrationProbe.checks).map(([k, v]) => (
                     <li key={k} className="flex items-center gap-1.5">
                       {v === true ? (
-                        <CheckCircle2 className="size-3 text-emerald-400 shrink-0" />
+                        <CheckCircle2 className="size-3 text-foreground shrink-0" />
                       ) : v === false ? (
-                        <XCircle className="size-3 text-red-400 shrink-0" />
+                        <XCircle className="size-3 text-muted-foreground shrink-0" />
                       ) : (
                         <span className="size-3 rounded-full border border-border shrink-0" />
                       )}
@@ -543,7 +532,7 @@ export function WhatsAppConfig() {
                   ))}
                 </ul>
                 {(registrationProbe.errors ?? []).length > 0 && (
-                  <ul className="pt-1 space-y-0.5 text-red-300">
+                  <ul className="pt-1 space-y-0.5 text-muted-foreground">
                     {registrationProbe.errors?.map((e, i) => (
                       <li key={i}>• {e}</li>
                     ))}
@@ -722,7 +711,7 @@ export function WhatsAppConfig() {
               variant="outline"
               onClick={handleReset}
               disabled={resetting}
-              className="border-red-900 text-red-400 hover:text-red-300 hover:bg-red-950/40"
+              className="border-border text-foreground hover:bg-muted"
             >
               {resetting ? (
                 <>

@@ -192,3 +192,31 @@ describe('generateReply — Anthropic', () => {
     expect(body.messages).toHaveLength(1)
   })
 })
+
+describe('generateReply — Gemini', () => {
+  it('calls the generateContent endpoint with key in URL and parses candidates', async () => {
+    const fetchMock = vi.fn().mockResolvedValue(
+      okResponse({
+        candidates: [{ content: { parts: [{ text: 'Hello from Gemini!' }] } }],
+        usageMetadata: { promptTokenCount: 20, candidatesTokenCount: 5, totalTokenCount: 25 },
+      }),
+    )
+    vi.stubGlobal('fetch', fetchMock)
+
+    const res = await generateReply({
+      config: config({ provider: 'gemini', apiKey: 'AIza-test-key' }),
+      systemPrompt: 'sys',
+      messages: [{ role: 'user', content: 'Hi' }],
+    })
+
+    expect(res).toEqual({
+      text: 'Hello from Gemini!',
+      handoff: false,
+      usage: { promptTokens: 20, completionTokens: 5, totalTokens: 25 },
+    })
+    const [url] = fetchMock.mock.calls[0]
+    expect(url).toContain('generativelanguage.googleapis.com')
+    expect(url).toContain('key=AIza-test-key')
+  })
+})
+
