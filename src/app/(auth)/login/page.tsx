@@ -15,7 +15,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { MessageSquare, UsersRound } from "lucide-react";
+import Silk from "@/components/ui/Silk";
 
 // `useSearchParams` opts the component out of static prerendering
 // unless it sits under a Suspense boundary. We split the form into
@@ -75,20 +75,20 @@ function LoginPageInner() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <Card className="w-full max-w-md border-border bg-card">
+    <div className="relative flex min-h-screen items-center justify-center px-4 py-8">
+      <Silk
+        color="#7B7481"
+        speed={5}
+        scale={1}
+        noiseIntensity={1.5}
+        rotation={0}
+      />
+      <Card className="relative z-10 w-full max-w-md border-2 border-white bg-black/90 p-2 backdrop-blur-xl shadow-[0_0_50px_rgba(255,255,255,0.25),0_20px_50px_rgba(0,0,0,0.9)] text-white">
         <CardHeader className="items-center text-center">
-          <div className="mb-2 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
-            {inviteToken ? (
-              <UsersRound className="h-6 w-6 text-primary" />
-            ) : (
-              <MessageSquare className="h-6 w-6 text-primary" />
-            )}
-          </div>
-          <CardTitle className="text-xl text-foreground">
+          <CardTitle className="text-2xl font-black tracking-widest text-white uppercase drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]">
             {inviteToken ? t('titleAccept') : t('titleWelcome')}
           </CardTitle>
-          <CardDescription className="text-muted-foreground">
+          <CardDescription className="text-xs tracking-wider text-neutral-400">
             {inviteToken
               ? t('descAccept')
               : t('descWelcome')}
@@ -97,13 +97,13 @@ function LoginPageInner() {
         <CardContent>
           <form onSubmit={handleLogin} className="flex flex-col gap-4">
             {error && (
-              <div className="rounded-lg border border-red-500/25 bg-red-500/10 px-4 py-3 text-sm font-medium text-rose-600">
+              <div className="rounded-lg border border-red-500/50 bg-red-950/40 px-4 py-3 text-sm font-medium text-red-300">
                 {error}
               </div>
             )}
 
             <div className="flex flex-col gap-2">
-              <Label htmlFor="email" className="text-muted-foreground">
+              <Label htmlFor="email" className="text-xs uppercase tracking-widest text-neutral-300 font-semibold">
                 {t('emailLabel')}
               </Label>
               <Input
@@ -113,18 +113,18 @@ function LoginPageInner() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="border-border bg-muted text-foreground placeholder:text-muted-foreground focus-visible:border-primary focus-visible:ring-primary/20"
+                className="border-neutral-700 bg-neutral-900/90 text-white placeholder:text-neutral-500 focus-visible:border-white focus-visible:ring-2 focus-visible:ring-white/30"
               />
             </div>
 
             <div className="flex flex-col gap-2">
               <div className="flex items-center justify-between">
-                <Label htmlFor="password" className="text-muted-foreground">
+                <Label htmlFor="password" className="text-xs uppercase tracking-widest text-neutral-300 font-semibold">
                   {t('passwordLabel')}
                 </Label>
                 <Link
                   href="/forgot-password"
-                  className="text-sm font-medium underline underline-offset-4 text-foreground/80 hover:text-foreground"
+                  className="text-xs font-medium text-neutral-400 hover:text-white underline underline-offset-4"
                 >
                   {t('forgotPassword')}
                 </Link>
@@ -136,20 +136,20 @@ function LoginPageInner() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="border-border bg-muted text-foreground placeholder:text-muted-foreground focus-visible:border-primary focus-visible:ring-primary/20"
+                className="border-neutral-700 bg-neutral-900/90 text-white placeholder:text-neutral-500 focus-visible:border-white focus-visible:ring-2 focus-visible:ring-white/30"
               />
             </div>
 
             <Button
               type="submit"
               disabled={loading}
-              className="mt-2 h-10 w-full bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+              className="mt-3 h-12 w-full border-2 border-white bg-white text-black font-extrabold uppercase tracking-widest transition-all hover:bg-black hover:text-white hover:shadow-[0_0_25px_rgba(255,255,255,0.8)] disabled:opacity-50"
             >
               {loading ? t('signingIn') : t('signIn')}
             </Button>
           </form>
 
-          <p className="mt-6 text-center text-sm text-muted-foreground">
+          <p className="mt-6 border-t border-dashed border-neutral-800 pt-4 text-center text-sm text-neutral-400">
             {t('noAccount')}{" "}
             <Link
               href={
@@ -157,7 +157,7 @@ function LoginPageInner() {
                   ? `/signup?invite=${encodeURIComponent(inviteToken)}`
                   : "/signup"
               }
-              className="font-medium underline underline-offset-4 text-foreground hover:text-foreground/80"
+              className="font-semibold text-white underline underline-offset-4 hover:text-neutral-300"
             >
               {t('createAccount')}
             </Link>

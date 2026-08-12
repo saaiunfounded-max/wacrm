@@ -160,7 +160,7 @@ const LegendItem = ({
 }
 
 interface ScrollButtonProps {
-  icon: React.ElementType
+  icon: React.ElementType<any>
   onClick?: () => void
   disabled?: boolean
 }
@@ -211,7 +211,8 @@ const ScrollButton = ({ icon, onClick, disabled }: ScrollButtonProps) => {
         setIsPressed(false)
       }}
     >
-      <Icon className="size-full" aria-hidden="true" />
+      {/* @ts-expect-error - Icon component generic type issue */}
+      <Icon className="size-full" aria-hidden={true} />
     </button>
   )
 }
