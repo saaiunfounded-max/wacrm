@@ -220,7 +220,7 @@ export async function POST(request: Request) {
         sentCount++
       } else {
         console.error(
-          `Failed to send broadcast to ${recipient.phone}:`,
+          `Broadcast Execution Failed for recipient ${recipient.phone}:`,
           lastError
         )
         results.push({
@@ -242,7 +242,7 @@ export async function POST(request: Request) {
   } catch (error) {
     // requireRole throws Unauthorized/Forbidden; toErrorResponse maps
     // those to 401/403 and collapses anything else to a generic 500.
-    console.error('Error in WhatsApp broadcast POST:', error)
+    console.error('Broadcast Execution Failed:', error)
     return toErrorResponse(error)
   }
 }

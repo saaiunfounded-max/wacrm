@@ -282,6 +282,7 @@ export async function deliverBroadcast(
       } catch (error) {
         const message = error instanceof Error ? error.message : 'Unknown error';
         lastError = message;
+        console.error('Broadcast Execution Failed:', error);
         // Only a "recipient not allowed" error is worth another variant.
         if (!isRecipientNotAllowedError(message)) break;
       }

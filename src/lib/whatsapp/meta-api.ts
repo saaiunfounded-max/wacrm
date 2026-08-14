@@ -24,17 +24,38 @@ export interface MetaPhoneInfo {
 }
 
 interface MetaErrorResponse {
-  error?: { message?: string; code?: number; type?: string }
+  error?: {
+    message?: string
+    code?: number
+    type?: string
+    error_subcode?: number
+    error_data?: unknown
+    fbtrace_id?: string
+  }
 }
 
 async function throwMetaError(response: Response, fallback: string): Promise<never> {
   let message = fallback
+  let data: unknown = null
   try {
-    const data = (await response.json()) as MetaErrorResponse
-    if (data.error?.message) message = data.error.message
+    data = await response.json()
+    const metaErr = data as MetaErrorResponse
+    if (metaErr.error?.message) {
+      message = metaErr.error.message
+      if (metaErr.error.code) {
+        message += ` (Code: ${metaErr.error.code})`
+      }
+    }
   } catch {
     // response body wasn't JSON — keep the fallback
   }
+
+  if (data) {
+    console.error('WhatsApp API Error Response:', JSON.stringify(data, null, 2))
+  } else {
+    console.error('WhatsApp API Error Response:', fallback)
+  }
+
   throw new Error(message)
 }
 

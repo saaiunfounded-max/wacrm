@@ -506,6 +506,8 @@ export function useBroadcastSending(): UseBroadcastSendingReturn {
                 ? batchRetryDelayMs(res.status, res.headers.get('Retry-After'))
                 : null;
             if (retryIn === null) {
+              console.error('WhatsApp API Error Response:', JSON.stringify(data, null, 2));
+              console.error('Broadcast Execution Failed:', data.error || 'Broadcast API request failed');
               throw new Error(data.error || 'Broadcast API request failed');
             }
             await sleep(retryIn);
@@ -522,6 +524,7 @@ export function useBroadcastSending(): UseBroadcastSendingReturn {
 
             if (!result) {
               failedCount++;
+              console.error('Broadcast Execution Failed: No phone number on contact', recipient.contact);
               await supabase
                 .from('broadcast_recipients')
                 .update({
@@ -544,6 +547,8 @@ export function useBroadcastSending(): UseBroadcastSendingReturn {
                 .eq('id', recipient.id);
             } else {
               failedCount++;
+              console.error(`WhatsApp API Error Response for ${phone}:`, result.error);
+              console.error(`Broadcast Execution Failed for recipient ${phone}:`, result.error);
               await supabase
                 .from('broadcast_recipients')
                 .update({
@@ -554,6 +559,7 @@ export function useBroadcastSending(): UseBroadcastSendingReturn {
             }
           }
         } catch (err) {
+          console.error('Broadcast Execution Failed:', err);
           for (const recipient of batch) {
             failedCount++;
             await supabase
@@ -587,6 +593,9 @@ export function useBroadcastSending(): UseBroadcastSendingReturn {
 
       setProgress(100);
       return broadcast.id;
+    } catch (err) {
+      console.error('Broadcast Execution Failed:', err);
+      throw err;
     } finally {
       setIsProcessing(false);
     }
