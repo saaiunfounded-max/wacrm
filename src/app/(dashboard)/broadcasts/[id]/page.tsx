@@ -515,7 +515,10 @@ export default function BroadcastDetailPage() {
                           : '-'}
                       </TableCell>
                       <TableCell className="max-w-xs truncate text-xs text-red-400">
-                        {recipient.error_message ?? '-'}
+                        {recipient.error_message ||
+                          (recipient.status === 'failed'
+                            ? 'Failed (Meta API error)'
+                            : '-')}
                       </TableCell>
                     </TableRow>
                   );
