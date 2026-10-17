@@ -12,8 +12,84 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { ArrowLeft, ArrowRight, Eye, ImageIcon, Loader2 } from 'lucide-react';
+import {
+  ArrowLeft,
+  ArrowRight,
+  Eye,
+  ImageIcon,
+  Loader2,
+  CheckCheck,
+  ExternalLink,
+  Phone,
+  CornerDownLeft,
+  Sun,
+  Moon,
+} from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import { cn } from '@/lib/utils';
+
+function parseWhatsAppFormatting(text: string, isDark: boolean): React.ReactNode {
+  if (!text) return null;
+
+  const lines = text.split('\n');
+  return lines.map((line, lineIdx) => {
+    // Regex matches *bold*, _italic_, ~strike~, ```code```
+    const parts = line.split(/(\*[^*\n]+\*|_[^_\n]+_|~[^~\n]+~|```[^`\n]+```)/g);
+
+    return (
+      <span key={lineIdx} className="block min-h-[1.25rem] leading-relaxed">
+        {parts.map((part, partIdx) => {
+          if (part.startsWith('*') && part.endsWith('*') && part.length > 2) {
+            return (
+              <strong
+                key={partIdx}
+                className={isDark ? 'font-bold text-white' : 'font-bold text-black'}
+              >
+                {part.slice(1, -1)}
+              </strong>
+            );
+          }
+          if (part.startsWith('_') && part.endsWith('_') && part.length > 2) {
+            return (
+              <em
+                key={partIdx}
+                className={isDark ? 'italic text-[#e9edef]' : 'italic text-[#111b21]'}
+              >
+                {part.slice(1, -1)}
+              </em>
+            );
+          }
+          if (part.startsWith('~') && part.endsWith('~') && part.length > 2) {
+            return (
+              <del
+                key={partIdx}
+                className={isDark ? 'line-through text-[#8696a0]' : 'line-through text-[#667781]'}
+              >
+                {part.slice(1, -1)}
+              </del>
+            );
+          }
+          if (part.startsWith('```') && part.endsWith('```') && part.length > 6) {
+            return (
+              <code
+                key={partIdx}
+                className={cn(
+                  'rounded px-1.5 py-0.5 font-mono text-xs',
+                  isDark
+                    ? 'bg-[#1f2c34] text-[#00a884]'
+                    : 'bg-[#e9edef] text-[#008069]'
+                )}
+              >
+                {part.slice(3, -3)}
+              </code>
+            );
+          }
+          return <span key={partIdx}>{part}</span>;
+        })}
+      </span>
+    );
+  });
+}
 
 type VariableType = 'static' | 'field' | 'custom_field';
 
@@ -84,6 +160,14 @@ export function Step3Personalize({
     Map<string, string>
   >(new Map());
   const [loadingPreview, setLoadingPreview] = useState(true);
+  const [previewTheme, setPreviewTheme] = useState<'dark' | 'light'>('dark');
+  const [currentTime, setCurrentTime] = useState('12:00 PM');
+
+  useEffect(() => {
+    setCurrentTime(
+      new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+    );
+  }, []);
 
   // Load user's custom fields + a representative contact for the
   // live preview. Fall back to sample data if no contacts exist yet.
@@ -400,22 +484,155 @@ export function Step3Personalize({
         </div>
       )}
 
-      {/* Live Preview — rendered as a WhatsApp-style bubble so the user
-          sees approximately what the recipient will see. */}
+      {/* Live Preview — rendered as an authentic WhatsApp message bubble */}
       <div className="rounded-xl border border-border bg-card/50 p-4">
-        <div className="mb-3 flex items-center gap-2">
-          <Eye className="h-4 w-4 text-primary" />
-          <p className="text-sm font-medium text-foreground">{t('personalize.preview')}</p>
-          <span className="text-xs text-muted-foreground">({previewLabel})</span>
-          {loadingPreview && (
-            <Loader2 className="h-3.5 w-3.5 animate-spin text-primary" />
-          )}
+        <div className="mb-3 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Eye className="h-4 w-4 text-primary" />
+            <p className="text-sm font-medium text-foreground">{t('personalize.preview')}</p>
+            <span className="text-xs text-muted-foreground">({previewLabel})</span>
+            {loadingPreview && (
+              <Loader2 className="h-3.5 w-3.5 animate-spin text-primary" />
+            )}
+          </div>
+
+          {/* Theme switcher */}
+          <div className="flex items-center gap-1 rounded-lg border border-border bg-muted/60 p-0.5 text-xs">
+            <button
+              type="button"
+              onClick={() => setPreviewTheme('dark')}
+              className={cn(
+                'flex items-center gap-1 rounded px-2 py-0.5 text-xs transition-all',
+                previewTheme === 'dark'
+                  ? 'bg-background font-medium text-foreground shadow-xs'
+                  : 'text-muted-foreground hover:text-foreground',
+              )}
+            >
+              <Moon className="h-3 w-3" />
+              <span>WhatsApp Dark</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setPreviewTheme('light')}
+              className={cn(
+                'flex items-center gap-1 rounded px-2 py-0.5 text-xs transition-all',
+                previewTheme === 'light'
+                  ? 'bg-background font-medium text-foreground shadow-xs'
+                  : 'text-muted-foreground hover:text-foreground',
+              )}
+            >
+              <Sun className="h-3 w-3" />
+              <span>WhatsApp Light</span>
+            </button>
+          </div>
         </div>
-        <div className="rounded-lg bg-[#0e1a12] p-3">
-          <div className="ml-auto max-w-[85%] rounded-lg bg-primary/30 px-3 py-2 shadow-sm">
-            <p className="whitespace-pre-wrap text-sm text-primary">
-              {previewText}
-            </p>
+
+        {/* Authentic WhatsApp chat background */}
+        <div
+          className={cn(
+            'relative overflow-hidden rounded-xl p-4 transition-colors duration-200 sm:p-6',
+            previewTheme === 'dark'
+              ? 'bg-[#0b141a] bg-[radial-gradient(#1f2c34_1px,transparent_1px)] [background-size:18px_18px]'
+              : 'bg-[#efeae2] bg-[radial-gradient(#dfd8cb_1px,transparent_1px)] [background-size:18px_18px]',
+          )}
+        >
+          {/* WhatsApp message bubble */}
+          <div
+            className={cn(
+              'ml-auto max-w-[94%] rounded-2xl rounded-tr-xs p-3.5 shadow-md transition-all sm:max-w-[80%]',
+              previewTheme === 'dark'
+                ? 'bg-[#005c4b] text-[#e9edef] shadow-black/40'
+                : 'bg-[#d9fdd3] text-[#111b21] shadow-black/10',
+            )}
+          >
+            {/* Header: Image preview if template has image header and URL is given */}
+            {mediaHeaderType === 'image' && headerMediaUrl.trim() && (
+              <div className="mb-2.5 overflow-hidden rounded-xl border border-black/10">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={headerMediaUrl.trim()}
+                  alt="Header preview"
+                  className="max-h-60 w-full object-cover"
+                />
+              </div>
+            )}
+
+            {/* Header: Text header if template has text header */}
+            {template.header_type === 'text' && template.header_content && (
+              <p
+                className={cn(
+                  'mb-2 text-sm font-bold',
+                  previewTheme === 'dark' ? 'text-white' : 'text-black',
+                )}
+              >
+                {template.header_content}
+              </p>
+            )}
+
+            {/* Body: High-contrast WhatsApp formatted text */}
+            <div className="text-sm">
+              {parseWhatsAppFormatting(previewText, previewTheme === 'dark')}
+            </div>
+
+            {/* Footer Text */}
+            {template.footer_text && (
+              <p
+                className={cn(
+                  'mt-2.5 text-[11px]',
+                  previewTheme === 'dark' ? 'text-[#8696a0]' : 'text-[#667781]',
+                )}
+              >
+                {template.footer_text}
+              </p>
+            )}
+
+            {/* Timestamp and Double Checkmarks */}
+            <div className="mt-1 flex items-center justify-end gap-1 select-none">
+              <span
+                className={cn(
+                  'text-[10px]',
+                  previewTheme === 'dark' ? 'text-[#8696a0]' : 'text-[#667781]',
+                )}
+              >
+                {currentTime}
+              </span>
+              <CheckCheck className="h-3.5 w-3.5 text-[#53bdeb]" />
+            </div>
+
+            {/* Interactive / CTA Buttons */}
+            {template.buttons && template.buttons.length > 0 && (
+              <div
+                className={cn(
+                  '-mx-3.5 -mb-3.5 mt-2.5 divide-y overflow-hidden rounded-b-2xl border-t',
+                  previewTheme === 'dark'
+                    ? 'divide-[#0b141a]/60 border-[#0b141a]/60 bg-[#005c4b]'
+                    : 'divide-black/10 border-black/10 bg-[#d9fdd3]',
+                )}
+              >
+                {template.buttons.map((btn, idx) => (
+                  <div
+                    key={idx}
+                    className={cn(
+                      'flex cursor-default items-center justify-center gap-1.5 px-3 py-2.5 text-center text-xs font-medium transition-colors',
+                      previewTheme === 'dark'
+                        ? 'text-[#53bdeb] hover:bg-white/5'
+                        : 'text-[#00a884] hover:bg-black/5',
+                    )}
+                  >
+                    {btn.type === 'URL' && (
+                      <ExternalLink className="h-3.5 w-3.5 shrink-0" />
+                    )}
+                    {btn.type === 'PHONE_NUMBER' && (
+                      <Phone className="h-3.5 w-3.5 shrink-0" />
+                    )}
+                    {btn.type === 'QUICK_REPLY' && (
+                      <CornerDownLeft className="h-3.5 w-3.5 shrink-0" />
+                    )}
+                    <span>{btn.text}</span>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>
