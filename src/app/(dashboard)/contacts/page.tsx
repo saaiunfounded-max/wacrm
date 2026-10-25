@@ -49,6 +49,7 @@ import {
   SlidersHorizontal,
   Filter,
   X,
+  CheckSquare,
 } from 'lucide-react';
 import { ContactForm } from '@/components/contacts/contact-form';
 import { ContactDetailView } from '@/components/contacts/contact-detail-view';
@@ -352,10 +353,22 @@ export default function ContactsPage() {
         <div>
           <h1 className="text-2xl font-bold text-foreground">{t('title')}</h1>
           <p className="text-sm text-muted-foreground mt-1">
-            {totalCount > 0 ? t('subtitle', { count: totalCount }) : t('subtitleZero')}
+            {totalCount > 0 ? `Manage your contact list (${totalCount} contacts)` : 'Manage your contact list.'}
           </p>
         </div>
         <div className="flex items-center gap-2">
+          {selected.size > 0 && (
+            <GatedButton
+              variant="destructive"
+              canAct={canEdit}
+              gateReason="delete contacts"
+              onClick={() => setBulkDeleteOpen(true)}
+              className="font-medium shadow-sm gap-1.5"
+            >
+              <Trash2 className="size-4" />
+              <span>Delete ({selected.size})</span>
+            </GatedButton>
+          )}
           {canEditSettings && (
             <Button
               variant="outline"
@@ -466,6 +479,29 @@ export default function ContactsPage() {
               )}
             </PopoverContent>
           </Popover>
+
+          <Button
+            variant="outline"
+            onClick={toggleSelectAll}
+            disabled={contacts.length === 0}
+            className="border-border text-foreground hover:bg-muted shrink-0 text-sm gap-2"
+          >
+            <CheckSquare className="size-4 text-primary" />
+            {allOnPageSelected ? 'Deselect page' : `Select all (${contacts.length})`}
+          </Button>
+
+          {selected.size > 0 && (
+            <GatedButton
+              variant="destructive"
+              canAct={canEdit}
+              gateReason="delete contacts"
+              onClick={() => setBulkDeleteOpen(true)}
+              className="shrink-0 text-sm gap-2 font-medium shadow-sm animate-in fade-in"
+            >
+              <Trash2 className="size-4" />
+              Delete selected ({selected.size})
+            </GatedButton>
+          )}
         </div>
 
         {/* Active tag-filter chips */}
@@ -542,7 +578,7 @@ export default function ContactsPage() {
         <Table>
           <TableHeader>
             <TableRow className="border-border hover:bg-transparent">
-              <TableHead className="w-10">
+              <TableHead className="w-12 pl-4">
                 <Checkbox
                   checked={allOnPageSelected}
                   indeterminate={!allOnPageSelected && someOnPageSelected}
@@ -603,7 +639,7 @@ export default function ContactsPage() {
                   className="border-border hover:bg-muted/50 cursor-pointer"
                   onClick={() => openDetail(contact.id)}
                 >
-                  <TableCell onClick={(e) => e.stopPropagation()}>
+                  <TableCell className="w-12 pl-4" onClick={(e) => e.stopPropagation()}>
                     <Checkbox
                       checked={selected.has(contact.id)}
                       onCheckedChange={() => toggleSelect(contact.id)}
