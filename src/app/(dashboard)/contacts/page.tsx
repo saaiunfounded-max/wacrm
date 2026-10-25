@@ -645,7 +645,20 @@ export default function ContactsPage() {
                     })}
                   </TableCell>
                   <TableCell>
-                    <DropdownMenu>
+                    <div className="flex items-center justify-end gap-1">
+                      <Button
+                        variant="ghost"
+                        size="icon-sm"
+                        title={t('deleteAction')}
+                        className="text-muted-foreground hover:text-red-400 hover:bg-red-500/10 transition-colors"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          confirmDelete(contact);
+                        }}
+                      >
+                        <Trash2 className="size-4" />
+                      </Button>
+                      <DropdownMenu>
                       <DropdownMenuTrigger
                         render={
                           <Button
@@ -685,6 +698,7 @@ export default function ContactsPage() {
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
+                    </div>
                   </TableCell>
                 </TableRow>
               ))

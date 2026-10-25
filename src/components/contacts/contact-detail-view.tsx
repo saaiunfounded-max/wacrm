@@ -18,6 +18,14 @@ import {
   SheetTitle,
   SheetDescription,
 } from '@/components/ui/sheet';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -68,6 +76,25 @@ export function ContactDetailView({
   // find-or-creates the conversation, so no inbound message is required.
   const [templatePickerOpen, setTemplatePickerOpen] = useState(false);
   const [sendingTemplate, setSendingTemplate] = useState(false);
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+
+  async function handleDeleteContact() {
+    if (!contactId) return;
+    setDeleting(true);
+    try {
+      const { error } = await supabase.from('contacts').delete().eq('id', contactId);
+      if (error) throw error;
+      toast.success('Contact deleted successfully');
+      setDeleteConfirmOpen(false);
+      onOpenChange(false);
+      onUpdated?.();
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Failed to delete contact');
+    } finally {
+      setDeleting(false);
+    }
+  }
 
   // Details tab
   const [editName, setEditName] = useState('');
@@ -432,7 +459,7 @@ export function ContactDetailView({
                   </div>
                 </div>
               </div>
-              <div className="mt-3">
+              <div className="mt-3 flex items-center justify-between gap-2">
                 <Button
                   size="sm"
                   onClick={() => setTemplatePickerOpen(true)}
@@ -445,6 +472,15 @@ export function ContactDetailView({
                     <LayoutTemplate className="size-4" />
                   )}
                   {t('sendTemplateBtn')}
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => setDeleteConfirmOpen(true)}
+                  className="border-red-500/30 text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-colors"
+                >
+                  <Trash2 className="size-4" />
+                  <span>Delete</span>
                 </Button>
               </div>
             </SheetHeader>
@@ -754,6 +790,39 @@ export function ContactDetailView({
       onOpenChange={setTemplatePickerOpen}
       onSelect={handleSendTemplate}
     />
+      <Dialog open={deleteConfirmOpen} onOpenChange={setDeleteConfirmOpen}>
+        <DialogContent className="bg-popover border-border">
+          <DialogHeader>
+            <DialogTitle className="text-popover-foreground">Delete Contact</DialogTitle>
+            <DialogDescription className="text-muted-foreground">
+              Are you sure you want to delete {contact?.name || contact?.phone || 'this contact'}? This action cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="gap-2 sm:gap-0">
+            <Button
+              variant="outline"
+              onClick={() => setDeleteConfirmOpen(false)}
+              className="border-border text-muted-foreground"
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={handleDeleteContact}
+              disabled={deleting}
+            >
+              {deleting ? (
+                <>
+                  <Loader2 className="size-4 animate-spin mr-1.5" />
+                  Deleting...
+                </>
+              ) : (
+                'Delete Contact'
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }
