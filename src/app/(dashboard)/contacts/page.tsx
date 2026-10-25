@@ -300,18 +300,24 @@ export default function ContactsPage() {
     if (ids.length === 0) return;
     setDeleting(true);
 
-    const { error } = await supabase.from('contacts').delete().in('id', ids);
+    try {
+      const { error } = await supabase.from('contacts').delete().in('id', ids);
 
-    if (error) {
-      toast.error(t('toastBulkFailedDelete'));
-    } else {
-      toast.success(t('toastBulkDeleted', { count: ids.length }));
-      setSelected(new Set());
-      fetchContacts();
+      if (error) {
+        console.error('Bulk delete failed:', error);
+        toast.error(error.message || t('toastBulkFailedDelete'));
+      } else {
+        toast.success(t('toastBulkDeleted', { count: ids.length }));
+        setSelected(new Set());
+        fetchContacts();
+      }
+    } catch (err) {
+      console.error('Bulk delete exception:', err);
+      toast.error(err instanceof Error ? err.message : t('toastBulkFailedDelete'));
+    } finally {
+      setDeleting(false);
+      setBulkDeleteOpen(false);
     }
-
-    setDeleting(false);
-    setBulkDeleteOpen(false);
   }
 
   const totalPages = Math.ceil(totalCount / PAGE_SIZE);
@@ -500,16 +506,19 @@ export default function ContactsPage() {
 
       {/* Bulk action bar */}
       {selected.size > 0 && (
-        <div className="flex items-center justify-between gap-4 rounded-lg border border-border bg-muted/40 px-4 py-2">
-          <p className="text-sm text-foreground">
-            {t('selectedCount', { count: selected.size })}
-          </p>
+        <div className="sticky top-2 z-30 flex items-center justify-between gap-4 rounded-lg border border-red-500/30 bg-card/95 backdrop-blur shadow-lg px-4 py-2.5 transition-all">
+          <div className="flex items-center gap-2">
+            <span className="flex size-2 rounded-full bg-red-500 animate-pulse" />
+            <p className="text-sm font-medium text-foreground">
+              {t('selectedCount', { count: selected.size })}
+            </p>
+          </div>
           <div className="flex items-center gap-2">
             <Button
               variant="ghost"
               size="sm"
               onClick={() => setSelected(new Set())}
-              className="text-muted-foreground hover:text-foreground"
+              className="text-muted-foreground hover:text-foreground text-xs"
             >
               {t('clearSelection')}
             </Button>
@@ -519,6 +528,7 @@ export default function ContactsPage() {
               canAct={canEdit}
               gateReason="delete contacts"
               onClick={() => setBulkDeleteOpen(true)}
+              className="font-medium shadow-sm"
             >
               <Trash2 className="size-4" />
               {t('deleteSelected')}
